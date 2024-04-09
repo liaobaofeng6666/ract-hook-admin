@@ -8,6 +8,7 @@ const AssemblySize = (props: any) => {
 	// 切换组件大小
 	const onClick = (e: MenuInfo) => {
 		setAssemblySize(e.key);
+		console.log(e, "liao");
 	};
 
 	const menu = (

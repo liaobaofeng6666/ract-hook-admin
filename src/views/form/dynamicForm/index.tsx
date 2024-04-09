@@ -11,11 +11,16 @@ const DynamicForm = () => {
 		<div className="card content-box">
 			<Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
 				<Form.List name="users">
-					{(fields, { add, remove }) => (
+					{(fields, { add, remove, move }) => (
 						<>
 							{fields.map(({ key, name, ...restField }) => (
 								<Space key={key} style={{ display: "flex", marginBottom: 8 }} align="baseline">
-									<Form.Item {...restField} name={[name, "first"]} rules={[{ required: true, message: "Missing first name" }]}>
+									<Form.Item
+										label="姓名"
+										{...restField}
+										name={[name, "first"]}
+										rules={[{ required: true, message: "Missing first name" }]}
+									>
 										<Input placeholder="First Name" />
 									</Form.Item>
 									<Form.Item {...restField} name={[name, "last"]} rules={[{ required: true, message: "Missing last name" }]}>
@@ -27,6 +32,12 @@ const DynamicForm = () => {
 							<Form.Item>
 								<Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
 									Add field
+								</Button>
+								<Button type="dashed" onClick={() => add("The head item", 0)} block icon={<PlusOutlined />}>
+									Add field head
+								</Button>
+								<Button type="dashed" onClick={() => move(1, 0)} block icon={<PlusOutlined />}>
+									move field
 								</Button>
 							</Form.Item>
 						</>

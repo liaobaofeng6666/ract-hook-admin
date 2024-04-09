@@ -32,5 +32,5 @@ export const useEcharts = (options: echarts.EChartsCoreOption, data?: any) => {
 		};
 	}, []);
 
-	return [echartsRef];
+	return [echartsRef, myChart];
 };

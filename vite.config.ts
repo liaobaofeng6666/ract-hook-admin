@@ -1,12 +1,16 @@
 import { defineConfig, loadEnv, ConfigEnv, UserConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
+import AutoImport from "unplugin-auto-import/vite";
+import AntdResolver from "unplugin-auto-import-antd";
 import { wrapperEnv } from "./src/utils/getEnv";
 import { visualizer } from "rollup-plugin-visualizer";
 import { createHtmlPlugin } from "vite-plugin-html";
 import viteCompression from "vite-plugin-compression";
 import eslintPlugin from "vite-plugin-eslint";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+// import AutoImport from "unplugin-auto-import/vite";
+// import AntdResolver from "unplugin-auto-import-antd";
 
 // @see: https://vitejs.dev/config/
 export default defineConfig((mode: ConfigEnv): UserConfig => {
@@ -76,7 +80,10 @@ export default defineConfig((mode: ConfigEnv): UserConfig => {
 					threshold: 10240,
 					algorithm: "gzip",
 					ext: ".gz"
-				})
+				}),
+			AutoImport({
+				resolvers: [AntdResolver({ prefix: "A" })]
+			})
 		],
 		esbuild: {
 			pure: viteEnv.VITE_DROP_CONSOLE ? ["console.log", "debugger"] : []

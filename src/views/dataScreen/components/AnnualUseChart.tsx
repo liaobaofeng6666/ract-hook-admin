@@ -1,28 +1,45 @@
 import { useEcharts } from "@/hooks/useEcharts";
 import { EChartsOption } from "echarts";
+import { useEffect, useState } from "react";
 import "./AnnualUseChart.less";
 
-interface ChartProp {
+interface ChartData {
 	label: string;
 	value: string[];
 }
-
-const AnnualUseChart = () => {
+interface AnnualUseChartProps {
+	curProvince: string;
+}
+const AnnualUseChart = (props: AnnualUseChartProps) => {
+	const { curProvince } = props;
 	const gradientColors = ["rgba(254, 219, 101,0.1)", "rgba(0, 122, 254,0.1)", "rgba(255, 75, 122, 0.1)"];
-	let annualData = [
-		{
-			label: new Date().getFullYear() - 2 + "年",
-			value: ["184", "90", "120", "0", "30", "100", "80", "40", "20", "510", "350", "180"]
-		},
-		{
-			label: new Date().getFullYear() - 1 + "年",
-			value: ["118", "509", "366", "162", "380", "123", "321", "158", "352", "474", "154", "22"]
-		},
-		{
-			label: new Date().getFullYear() + "年",
-			value: ["548", "259", "113", "90", "69", "512", "23", "49", "28", "420", "313", "156"]
+	const [annualData, setAnnualData] = useState<ChartData[]>([]);
+
+	const randomArr = () => {
+		const arr = [];
+		for (let index = 0; index < 12; index++) {
+			const element = (Math.random() * 500).toString();
+			arr.push(element);
 		}
-	];
+		return arr;
+	};
+	useEffect(() => {
+		console.log("lialiaoliao");
+		setAnnualData([
+			{
+				label: new Date().getFullYear() - 2 + "年",
+				value: randomArr()
+			},
+			{
+				label: new Date().getFullYear() - 1 + "年",
+				value: ["118", "509", "366", "162", "380", "123", "321", "158", "352", "474", "154", "22"]
+			},
+			{
+				label: new Date().getFullYear() + "年",
+				value: ["548", "259", "113", "90", "69", "512", "23", "49", "28", "420", "313", "156"]
+			}
+		]);
+	}, [curProvince]);
 	let data = {
 		data: annualData,
 		unit: annualData.map(val => val.label),

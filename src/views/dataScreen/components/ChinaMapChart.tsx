@@ -1,10 +1,12 @@
+import { useEffect } from "react";
 import { useEcharts } from "@/hooks/useEcharts";
 import { EChartsOption } from "echarts";
 import echarts from "@/utils/echarts";
 import mapJson from "../assets/china.json";
 import "./ChinaMapChart.less";
 
-const ChinaMapChart = () => {
+const ChinaMapChart = (props: { mapCallbackFn: any }) => {
+	const { mapCallbackFn } = props;
 	echarts.registerMap("china", mapJson as any);
 	/* echarts sysmbol */
 	let planePath: string =
@@ -216,8 +218,15 @@ const ChinaMapChart = () => {
 		]
 	};
 
-	const [echartsRef] = useEcharts(option, data);
+	const [echartsRef, myChart] = useEcharts(option, data);
 
+	useEffect(() => {
+		if (myChart && myChart.current) {
+			myChart.current.on("click", function (params: any) {
+				mapCallbackFn(params.name);
+			});
+		}
+	}, []);
 	return (
 		<div className="content-box">
 			<div className="map-ball"></div>

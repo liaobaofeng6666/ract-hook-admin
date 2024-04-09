@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { HOME_URL } from "@/config/config";
 import AgeRatioChart from "./components/AgeRatioChart";
@@ -18,6 +18,7 @@ const DataScreen = () => {
 	const handleTo = () => {
 		navigate(HOME_URL);
 	};
+	const [currentProvince, setProvince] = useState("全国");
 	const dataScreenRef = useRef<HTMLDivElement>(null);
 
 	/* 浏览器监听 resize 事件 */
@@ -45,6 +46,11 @@ const DataScreen = () => {
 		return () => {
 			window.removeEventListener("resize", resize);
 		};
+	}, []);
+
+	const mapCallback = useCallback((e: any): void => {
+		console.log(e, "eeeee");
+		setProvince(e);
 	}, []);
 
 	return (
@@ -100,7 +106,7 @@ const DataScreen = () => {
 					<div className="dataScreen-ct">
 						<div className="dataScreen-map">
 							<div className="dataScreen-map-title">景区实时客流量</div>
-							<ChinaMapChart />
+							<ChinaMapChart mapCallbackFn={mapCallback} />
 						</div>
 						<div className="dataScreen-cb">
 							<div className="dataScreen-main-title">
@@ -128,7 +134,7 @@ const DataScreen = () => {
 								<img src={dataScreenTitle} alt="" />
 							</div>
 							<div className="dataScreen-main-chart">
-								<AnnualUseChart />
+								<AnnualUseChart curProvince={currentProvince} />
 							</div>
 						</div>
 						<div className="dataScreen-bottom">
